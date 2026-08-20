@@ -1,0 +1,53 @@
+# Entity: base
+
+main: kit: entity: base: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "name"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "permissionLevel"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "base"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          method: "GET"
+          orig: "/meta/bases"
+          parts: [
+            "meta"
+            "bases"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body.bases`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

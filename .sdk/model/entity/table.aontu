@@ -1,0 +1,129 @@
+# Entity: table
+
+main: kit: entity: table: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "description"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "name"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "primaryFieldId"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "table"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "base_id"
+                orig: "base_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/meta/bases/{baseId}/tables"
+          parts: [
+            "meta"
+            "bases"
+            "{base_id}"
+            "tables"
+          ]
+          rename: {
+            param: {
+              baseId: "base_id"
+            }
+          }
+          select: {
+            exist: [
+              "base_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "base_id"
+                orig: "base_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/meta/bases/{baseId}/tables"
+          parts: [
+            "meta"
+            "bases"
+            "{base_id}"
+            "tables"
+          ]
+          rename: {
+            param: {
+              baseId: "base_id"
+            }
+          }
+          select: {
+            exist: [
+              "base_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.tables`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "base"
+      ]
+    ]
+  }
+
+
+
+}

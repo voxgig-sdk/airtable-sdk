@@ -1,0 +1,895 @@
+{
+  "NAME": "AIRTABLE",
+  "Name": "Airtable",
+  "def": "airtable-openapi.json",
+  "main": {
+    "api": {
+      "entity": {},
+      "guide": {}
+    },
+    "custom": {
+      "plurals": {
+        "bases": "base"
+      }
+    },
+    "def": {
+      "desc": ""
+    },
+    "kit": {
+      "author": {
+        "name": "",
+        "url": ""
+      },
+      "config": {
+        "docs_order": [
+          "ts",
+          "py",
+          "php",
+          "go",
+          "rb",
+          "lua"
+        ],
+        "headers": {
+          "content-type": "application/json"
+        },
+        "repr": "auto"
+      },
+      "contributor": {},
+      "docs": {},
+      "entity": {
+        "base": {
+          "active": true,
+          "alias": {
+            "field": {}
+          },
+          "fields": [
+            {
+              "active": true,
+              "name": "id",
+              "req": false,
+              "type": "`$STRING`"
+            },
+            {
+              "active": true,
+              "name": "name",
+              "req": false,
+              "type": "`$STRING`"
+            },
+            {
+              "active": true,
+              "name": "permissionLevel",
+              "req": false,
+              "type": "`$STRING`"
+            }
+          ],
+          "id": {
+            "field": "id",
+            "name": "id"
+          },
+          "name": "base",
+          "op": {
+            "list": {
+              "input": "data",
+              "name": "list",
+              "points": [
+                {
+                  "active": true,
+                  "args": {},
+                  "kind": "http",
+                  "method": "GET",
+                  "orig": "/meta/bases",
+                  "parts": [
+                    "meta",
+                    "bases"
+                  ],
+                  "select": {},
+                  "transform": {
+                    "req": "`reqdata`",
+                    "res": "`body.bases`"
+                  }
+                }
+              ]
+            }
+          },
+          "relations": {
+            "ancestors": []
+          }
+        },
+        "record": {
+          "active": true,
+          "alias": {
+            "field": {}
+          },
+          "fields": [
+            {
+              "active": true,
+              "name": "createdTime",
+              "req": false,
+              "type": "`$STRING`"
+            },
+            {
+              "active": true,
+              "name": "fields",
+              "req": false,
+              "type": "`$OBJECT`"
+            },
+            {
+              "active": true,
+              "name": "id",
+              "req": false,
+              "type": "`$STRING`"
+            },
+            {
+              "active": true,
+              "name": "records",
+              "req": false,
+              "type": "`$ARRAY`"
+            }
+          ],
+          "id": {
+            "field": "id",
+            "name": "id"
+          },
+          "name": "record",
+          "op": {
+            "create": {
+              "input": "data",
+              "name": "create",
+              "points": [
+                {
+                  "active": true,
+                  "args": {
+                    "params": [
+                      {
+                        "active": true,
+                        "kind": "param",
+                        "name": "base_id",
+                        "orig": "base_id",
+                        "reqd": true,
+                        "type": "`$STRING`"
+                      },
+                      {
+                        "active": true,
+                        "kind": "param",
+                        "name": "table_id",
+                        "orig": "table_id",
+                        "reqd": true,
+                        "type": "`$STRING`"
+                      }
+                    ]
+                  },
+                  "kind": "http",
+                  "method": "POST",
+                  "orig": "/{baseId}/{tableId}",
+                  "parts": [
+                    "{base_id}",
+                    "{table_id}"
+                  ],
+                  "rename": {
+                    "param": {
+                      "baseId": "base_id",
+                      "tableId": "table_id"
+                    }
+                  },
+                  "select": {
+                    "exist": [
+                      "base_id",
+                      "table_id"
+                    ]
+                  },
+                  "transform": {
+                    "req": "`reqdata`",
+                    "res": "`body`"
+                  }
+                }
+              ]
+            },
+            "list": {
+              "input": "data",
+              "name": "list",
+              "points": [
+                {
+                  "active": true,
+                  "args": {
+                    "params": [
+                      {
+                        "active": true,
+                        "kind": "param",
+                        "name": "base_id",
+                        "orig": "base_id",
+                        "reqd": true,
+                        "type": "`$STRING`"
+                      },
+                      {
+                        "active": true,
+                        "kind": "param",
+                        "name": "table_id",
+                        "orig": "table_id",
+                        "reqd": true,
+                        "type": "`$STRING`"
+                      }
+                    ]
+                  },
+                  "kind": "http",
+                  "method": "GET",
+                  "orig": "/{baseId}/{tableId}",
+                  "parts": [
+                    "{base_id}",
+                    "{table_id}"
+                  ],
+                  "rename": {
+                    "param": {
+                      "baseId": "base_id",
+                      "tableId": "table_id"
+                    }
+                  },
+                  "select": {
+                    "exist": [
+                      "base_id",
+                      "table_id"
+                    ]
+                  },
+                  "transform": {
+                    "req": "`reqdata`",
+                    "res": "`body.records`"
+                  }
+                }
+              ]
+            },
+            "load": {
+              "input": "data",
+              "name": "load",
+              "points": [
+                {
+                  "active": true,
+                  "args": {
+                    "params": [
+                      {
+                        "active": true,
+                        "kind": "param",
+                        "name": "base_id",
+                        "orig": "base_id",
+                        "reqd": true,
+                        "type": "`$STRING`"
+                      },
+                      {
+                        "active": true,
+                        "kind": "param",
+                        "name": "record_id",
+                        "orig": "record_id",
+                        "reqd": true,
+                        "type": "`$STRING`"
+                      },
+                      {
+                        "active": true,
+                        "kind": "param",
+                        "name": "table_id",
+                        "orig": "table_id",
+                        "reqd": true,
+                        "type": "`$STRING`"
+                      }
+                    ]
+                  },
+                  "kind": "http",
+                  "method": "GET",
+                  "orig": "/{baseId}/{tableId}/{recordId}",
+                  "parts": [
+                    "{base_id}",
+                    "{table_id}",
+                    "{record_id}"
+                  ],
+                  "rename": {
+                    "param": {
+                      "baseId": "base_id",
+                      "recordId": "record_id",
+                      "tableId": "table_id"
+                    }
+                  },
+                  "select": {
+                    "exist": [
+                      "base_id",
+                      "record_id",
+                      "table_id"
+                    ]
+                  },
+                  "transform": {
+                    "req": "`reqdata`",
+                    "res": "`body.fields`"
+                  }
+                }
+              ]
+            }
+          },
+          "relations": {
+            "ancestors": []
+          }
+        },
+        "table": {
+          "active": true,
+          "alias": {
+            "field": {}
+          },
+          "fields": [
+            {
+              "active": true,
+              "name": "description",
+              "req": false,
+              "type": "`$STRING`"
+            },
+            {
+              "active": true,
+              "name": "id",
+              "req": false,
+              "type": "`$STRING`"
+            },
+            {
+              "active": true,
+              "name": "name",
+              "req": false,
+              "type": "`$STRING`"
+            },
+            {
+              "active": true,
+              "name": "primaryFieldId",
+              "req": false,
+              "type": "`$STRING`"
+            }
+          ],
+          "id": {
+            "field": "id",
+            "name": "id"
+          },
+          "name": "table",
+          "op": {
+            "create": {
+              "input": "data",
+              "name": "create",
+              "points": [
+                {
+                  "active": true,
+                  "args": {
+                    "params": [
+                      {
+                        "active": true,
+                        "kind": "param",
+                        "name": "base_id",
+                        "orig": "base_id",
+                        "reqd": true,
+                        "type": "`$STRING`"
+                      }
+                    ]
+                  },
+                  "kind": "http",
+                  "method": "POST",
+                  "orig": "/meta/bases/{baseId}/tables",
+                  "parts": [
+                    "meta",
+                    "bases",
+                    "{base_id}",
+                    "tables"
+                  ],
+                  "rename": {
+                    "param": {
+                      "baseId": "base_id"
+                    }
+                  },
+                  "select": {
+                    "exist": [
+                      "base_id"
+                    ]
+                  },
+                  "transform": {
+                    "req": "`reqdata`",
+                    "res": "`body`"
+                  }
+                }
+              ]
+            },
+            "list": {
+              "input": "data",
+              "name": "list",
+              "points": [
+                {
+                  "active": true,
+                  "args": {
+                    "params": [
+                      {
+                        "active": true,
+                        "kind": "param",
+                        "name": "base_id",
+                        "orig": "base_id",
+                        "reqd": true,
+                        "type": "`$STRING`"
+                      }
+                    ]
+                  },
+                  "kind": "http",
+                  "method": "GET",
+                  "orig": "/meta/bases/{baseId}/tables",
+                  "parts": [
+                    "meta",
+                    "bases",
+                    "{base_id}",
+                    "tables"
+                  ],
+                  "rename": {
+                    "param": {
+                      "baseId": "base_id"
+                    }
+                  },
+                  "select": {
+                    "exist": [
+                      "base_id"
+                    ]
+                  },
+                  "transform": {
+                    "req": "`reqdata`",
+                    "res": "`body.tables`"
+                  }
+                }
+              ]
+            }
+          },
+          "relations": {
+            "ancestors": [
+              [
+                "base"
+              ]
+            ]
+          }
+        }
+      },
+      "feature": {
+        "test": {
+          "active": true,
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
+          "config": {
+            "options": {
+              "active": false
+            }
+          },
+          "hook": {
+            "GetData": {
+              "active": true,
+              "await": false
+            },
+            "GetMatch": {
+              "active": true,
+              "await": false
+            },
+            "PostConstruct": {
+              "active": true,
+              "await": false
+            },
+            "PostConstructEntity": {
+              "active": true,
+              "await": false
+            },
+            "PostOperation": {
+              "active": false,
+              "await": false
+            },
+            "PrePoint": {
+              "active": true,
+              "await": false
+            },
+            "PreRequest": {
+              "active": true,
+              "await": false
+            },
+            "PreResponse": {
+              "active": true,
+              "await": false
+            },
+            "PreResult": {
+              "active": true,
+              "await": false
+            },
+            "PreSpec": {
+              "active": true,
+              "await": false
+            },
+            "PreTarget": {
+              "active": false,
+              "await": false
+            },
+            "SetData": {
+              "active": true,
+              "await": false
+            },
+            "SetMatch": {
+              "active": true,
+              "await": false
+            }
+          },
+          "name": "test",
+          "origname": "",
+          "package": "@voxgig/sdkgen",
+          "target": {
+            "seneca-provider": {
+              "deps": {}
+            },
+            "ts": {
+              "deps": {}
+            }
+          },
+          "title": "In-memory mock transport for testing without a live server",
+          "version": "0.0.1"
+        }
+      },
+      "flow": {
+        "BasicBaseFlow": {
+          "active": true,
+          "entity": "base",
+          "key$": "BasicBaseFlow",
+          "kind": "basic",
+          "name": "BasicBaseFlow",
+          "param": {},
+          "step": [
+            {
+              "active": true,
+              "data": {},
+              "input": {},
+              "match": {},
+              "op": "list",
+              "spec": [],
+              "valid": [
+                {
+                  "apply": "ItemExists",
+                  "def": {
+                    "ref": "base_ref01"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "BasicRecordFlow": {
+          "active": true,
+          "entity": "record",
+          "key$": "BasicRecordFlow",
+          "kind": "basic",
+          "name": "BasicRecordFlow",
+          "param": {},
+          "step": [
+            {
+              "active": true,
+              "data": {},
+              "input": {
+                "ref": "record_ref01"
+              },
+              "match": {
+                "base_id": "base01",
+                "table_id": "table01"
+              },
+              "op": "create",
+              "spec": [],
+              "valid": []
+            },
+            {
+              "active": true,
+              "data": {},
+              "input": {},
+              "match": {
+                "base_id": "base01",
+                "table_id": "table01"
+              },
+              "op": "list",
+              "spec": [],
+              "valid": [
+                {
+                  "apply": "ItemExists",
+                  "def": {
+                    "ref": "record_ref01"
+                  }
+                }
+              ]
+            },
+            {
+              "active": true,
+              "data": {},
+              "input": {
+                "ref": "record_ref01",
+                "srcdatavar": "record_ref01_data",
+                "suffix": "_dt0"
+              },
+              "match": {
+                "base_id": "base01",
+                "id": "record01",
+                "table_id": "table01"
+              },
+              "op": "load",
+              "spec": [],
+              "valid": [
+                {
+                  "apply": "TextFieldMark",
+                  "def": {
+                    "mark": "Mark01-record_ref01"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "BasicTableFlow": {
+          "active": true,
+          "entity": "table",
+          "key$": "BasicTableFlow",
+          "kind": "basic",
+          "name": "BasicTableFlow",
+          "param": {},
+          "step": [
+            {
+              "active": true,
+              "data": {},
+              "input": {
+                "ref": "table_ref01"
+              },
+              "match": {
+                "base_id": "base01"
+              },
+              "op": "create",
+              "spec": [],
+              "valid": []
+            },
+            {
+              "active": true,
+              "data": {},
+              "input": {},
+              "match": {
+                "base_id": "base01"
+              },
+              "op": "list",
+              "spec": [],
+              "valid": [
+                {
+                  "apply": "ItemExists",
+                  "def": {
+                    "ref": "table_ref01"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "info": {
+        "description": "Hand-authored minimal spec covering base, table, and record metadata/records endpoints. Airtable publishes no official OpenAPI spec; this mirrors the documented REST shape at airtable.com/developers/web/api.",
+        "security": {
+          "in": "header",
+          "name": "Authorization",
+          "prefix": "Bearer",
+          "scheme": "BearerAuth",
+          "type": "http"
+        },
+        "servers": [
+          {
+            "url": "https://api.airtable.com/v0"
+          }
+        ],
+        "summary": "Hand-authored minimal spec covering base, table, and record metadata/records endpoints.",
+        "title": "Airtable Web API",
+        "version": "1.0.0",
+        "website": "https://airtable.com"
+      },
+      "option": {},
+      "repo": {
+        "host": "github.com",
+        "path": ""
+      },
+      "target": {
+        "seneca-provider": {
+          "active": true,
+          "author": {
+            "name": "",
+            "url": ""
+          },
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
+          "comment": {
+            "line": "//"
+          },
+          "deps": {
+            "@seneca/doc": {
+              "active": true,
+              "kind": "dev",
+              "version": "^8.0.0"
+            },
+            "@seneca/env": {
+              "active": true,
+              "kind": "peer",
+              "version": ">=0.4"
+            },
+            "@seneca/maintain": {
+              "active": true,
+              "kind": "prod",
+              "version": "^0.1.0"
+            },
+            "@seneca/provider": {
+              "active": true,
+              "kind": "peer",
+              "version": ">=4"
+            },
+            "@types/node": {
+              "active": true,
+              "kind": "dev",
+              "version": "^24.0.0"
+            },
+            "seneca": {
+              "active": true,
+              "kind": "peer,dev",
+              "version": ">=3||>=4.0.0-rc2"
+            },
+            "seneca-entity": {
+              "active": true,
+              "kind": "peer",
+              "version": ">=26"
+            },
+            "seneca-msg-test": {
+              "active": true,
+              "kind": "dev",
+              "version": "^4.1.0"
+            },
+            "seneca-promisify": {
+              "active": true,
+              "kind": "peer",
+              "version": ">=3"
+            },
+            "typescript": {
+              "active": true,
+              "kind": "dev",
+              "version": "^5.4.5"
+            }
+          },
+          "ext": "ts",
+          "feature": {
+            "fullset": [],
+            "trim": true
+          },
+          "module": {
+            "goversion": "",
+            "name": "airtable",
+            "package": "",
+            "path": ""
+          },
+          "name": "seneca-provider",
+          "origname": "",
+          "output": {
+            "adopt": false,
+            "path": "../../seneca/airtable-provider",
+            "repo": "",
+            "sdkrel": "../../voxgig-sdk/airtable-sdk"
+          },
+          "package": "@voxgig/sdkgen",
+          "phase": {
+            "agentguide": {
+              "active": false
+            },
+            "entity": {
+              "active": false
+            },
+            "feature": {
+              "active": false
+            },
+            "readme": {
+              "active": false
+            },
+            "test": {
+              "active": false
+            }
+          },
+          "publish": {
+            "registry": {
+              "active": false,
+              "name": "npm",
+              "package": "",
+              "state": "pending",
+              "url": "https://registry.npmjs.org",
+              "vault": {
+                "alias": "npm",
+                "env": "",
+                "recipe": "npm"
+              }
+            },
+            "tag": {
+              "active": true,
+              "prefix": "",
+              "vault": {
+                "alias": "github",
+                "recipe": "github"
+              },
+              "via": "port"
+            },
+            "version": "0.0.1"
+          },
+          "srcfeature": false,
+          "title": "Seneca Provider"
+        },
+        "ts": {
+          "active": true,
+          "author": {
+            "name": "",
+            "url": ""
+          },
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
+          "comment": {
+            "line": "//"
+          },
+          "deps": {
+            "@types/node": {
+              "active": true,
+              "kind": "dev",
+              "version": "^25.6.0"
+            },
+            "dotenv": {
+              "active": true,
+              "kind": "dev",
+              "version": "^17.4.2"
+            },
+            "typescript": {
+              "active": true,
+              "kind": "dev",
+              "version": "^5.9.3"
+            }
+          },
+          "ext": "ts",
+          "feature": {
+            "fullset": [],
+            "trim": true
+          },
+          "module": {
+            "goversion": "",
+            "name": "airtable",
+            "package": "",
+            "path": ""
+          },
+          "name": "ts",
+          "origname": "",
+          "output": {
+            "adopt": false,
+            "path": "",
+            "repo": "",
+            "sdkrel": ""
+          },
+          "package": "@voxgig/sdkgen",
+          "publish": {
+            "registry": {
+              "active": false,
+              "name": "npm",
+              "package": "",
+              "state": "pending",
+              "url": "https://registry.npmjs.org",
+              "vault": {
+                "alias": "npm",
+                "env": "",
+                "recipe": "npm"
+              }
+            },
+            "tag": {
+              "active": true,
+              "prefix": "",
+              "vault": {
+                "alias": "github",
+                "recipe": "github"
+              },
+              "via": "port"
+            },
+            "version": "0.0.1"
+          },
+          "title": "TypeScript"
+        }
+      },
+      "test": {
+        "live": {
+          "app": false,
+          "base": "",
+          "strict": false
+        }
+      }
+    }
+  },
+  "name": "airtable",
+  "name-": "airtable",
+  "name_": "airtable",
+  "name__orig": "airtable",
+  "origin": "voxgig-sdk"
+}

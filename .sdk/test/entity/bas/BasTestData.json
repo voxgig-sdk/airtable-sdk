@@ -1,0 +1,29 @@
+{
+  "existing": {
+    "bas": {
+      "BAS00": {
+        "id": "BAS00",
+        "name": "s1f",
+        "permissionLevel": "s20"
+      },
+      "BAS01": {
+        "id": "BAS01",
+        "name": "s3d",
+        "permissionLevel": "s3e"
+      },
+      "BAS02": {
+        "id": "BAS02",
+        "name": "s5b",
+        "permissionLevel": "s5c"
+      }
+    }
+  },
+  "new": {
+    "bas": {
+      "bas_ref01": {
+        "name": "s79",
+        "permissionLevel": "s7a"
+      }
+    }
+  }
+}

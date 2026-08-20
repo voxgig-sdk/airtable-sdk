@@ -1,0 +1,34 @@
+# BasicGetRecordFlow
+
+main: kit: flow: BasicGetRecordFlow:
+{
+  entity: "get_record",
+  kind: "basic",
+  name: "BasicGetRecordFlow",
+  step: [
+    {
+      input: {
+        ref: "get_record_ref01",
+        srcdatavar: "get_record_ref01_data",
+        suffix: "_dt0"
+      }
+
+      match: {
+        base_id: "base01",
+        id: "get_record01",
+        table_id: "table01"
+      }
+
+      op: "load",
+      valid: [
+        {
+          apply: "TextFieldMark",
+          def: {
+            mark: "Mark01-get_record_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicGetRecordFlow"
+}

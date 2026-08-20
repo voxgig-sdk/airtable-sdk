@@ -1,0 +1,29 @@
+{
+  "existing": {
+    "get_record": {
+      "GET_RECORD00": {
+        "base_id": "BASE01",
+        "record_id": "RECORD01",
+        "table_id": "TABLE01",
+        "id": "GET_RECORD00"
+      },
+      "GET_RECORD01": {
+        "base_id": "BASE01",
+        "record_id": "RECORD01",
+        "table_id": "TABLE01",
+        "id": "GET_RECORD01"
+      },
+      "GET_RECORD02": {
+        "base_id": "BASE01",
+        "record_id": "RECORD01",
+        "table_id": "TABLE01",
+        "id": "GET_RECORD02"
+      }
+    }
+  },
+  "new": {
+    "get_record": {
+      "get_record_ref01": {}
+    }
+  }
+}

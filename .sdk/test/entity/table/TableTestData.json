@@ -1,0 +1,36 @@
+{
+  "existing": {
+    "table": {
+      "TABLE00": {
+        "description": "s28",
+        "id": "TABLE00",
+        "name": "s2a",
+        "primaryFieldId": "s2b",
+        "base_id": "BASE01"
+      },
+      "TABLE01": {
+        "description": "s50",
+        "id": "TABLE01",
+        "name": "s52",
+        "primaryFieldId": "s53",
+        "base_id": "BASE01"
+      },
+      "TABLE02": {
+        "description": "s78",
+        "id": "TABLE02",
+        "name": "s7a",
+        "primaryFieldId": "s7b",
+        "base_id": "BASE01"
+      }
+    }
+  },
+  "new": {
+    "table": {
+      "table_ref01": {
+        "description": "sa0",
+        "name": "sa2",
+        "primaryFieldId": "sa3"
+      }
+    }
+  }
+}

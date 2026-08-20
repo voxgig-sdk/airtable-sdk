@@ -1,0 +1,38 @@
+# BasicTableFlow
+
+main: kit: flow: BasicTableFlow:
+{
+  entity: "table",
+  kind: "basic",
+  name: "BasicTableFlow",
+  step: [
+    {
+      input: {
+        ref: "table_ref01"
+      }
+
+      match: {
+        base_id: "base01"
+      }
+
+      op: "create"
+    }
+
+    {
+      match: {
+        base_id: "base01"
+      }
+
+      op: "list",
+      valid: [
+        {
+          apply: "ItemExists",
+          def: {
+            ref: "table_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicTableFlow"
+}

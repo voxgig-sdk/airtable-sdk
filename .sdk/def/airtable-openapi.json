@@ -1,0 +1,162 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Airtable Web API",
+    "version": "1.0.0",
+    "description": "Hand-authored minimal spec covering base, table, and record metadata/records endpoints. Airtable publishes no official OpenAPI spec; this mirrors the documented REST shape at airtable.com/developers/web/api."
+  },
+  "servers": [
+    { "url": "https://api.airtable.com/v0" }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": { "type": "http", "scheme": "bearer" }
+    },
+    "schemas": {
+      "Base": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "permissionLevel": { "type": "string" }
+        }
+      },
+      "Table": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "primaryFieldId": { "type": "string" },
+          "description": { "type": "string" }
+        }
+      },
+      "Record": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "createdTime": { "type": "string" },
+          "fields": { "type": "object" }
+        }
+      }
+    }
+  },
+  "security": [ { "BearerAuth": [] } ],
+  "paths": {
+    "/meta/bases": {
+      "get": {
+        "operationId": "listBases",
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": { "application/json": {
+              "schema": { "type": "object", "properties": {
+                "bases": { "type": "array", "items": { "$ref": "#/components/schemas/Base" } }
+              } }
+            } }
+          }
+        }
+      }
+    },
+    "/meta/bases/{baseId}/tables": {
+      "get": {
+        "operationId": "listTables",
+        "parameters": [
+          { "name": "baseId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": { "application/json": {
+              "schema": { "type": "object", "properties": {
+                "tables": { "type": "array", "items": { "$ref": "#/components/schemas/Table" } }
+              } }
+            } }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createTable",
+        "parameters": [
+          { "name": "baseId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": {
+            "schema": { "$ref": "#/components/schemas/Table" }
+          } }
+        },
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": { "application/json": {
+              "schema": { "$ref": "#/components/schemas/Table" }
+            } }
+          }
+        }
+      }
+    },
+    "/{baseId}/{tableId}": {
+      "get": {
+        "operationId": "listRecords",
+        "parameters": [
+          { "name": "baseId", "in": "path", "required": true, "schema": { "type": "string" } },
+          { "name": "tableId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": { "application/json": {
+              "schema": { "type": "object", "properties": {
+                "records": { "type": "array", "items": { "$ref": "#/components/schemas/Record" } },
+                "offset": { "type": "string" }
+              } }
+            } }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createRecords",
+        "parameters": [
+          { "name": "baseId", "in": "path", "required": true, "schema": { "type": "string" } },
+          { "name": "tableId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": {
+            "schema": { "type": "object", "properties": {
+              "records": { "type": "array", "items": { "$ref": "#/components/schemas/Record" } }
+            } }
+          } }
+        },
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": { "application/json": {
+              "schema": { "type": "object", "properties": {
+                "records": { "type": "array", "items": { "$ref": "#/components/schemas/Record" } }
+              } }
+            } }
+          }
+        }
+      }
+    },
+    "/{baseId}/{tableId}/{recordId}": {
+      "get": {
+        "operationId": "getRecord",
+        "parameters": [
+          { "name": "baseId", "in": "path", "required": true, "schema": { "type": "string" } },
+          { "name": "tableId", "in": "path", "required": true, "schema": { "type": "string" } },
+          { "name": "recordId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": { "application/json": {
+              "schema": { "$ref": "#/components/schemas/Record" }
+            } }
+          }
+        }
+      }
+    }
+  }
+}

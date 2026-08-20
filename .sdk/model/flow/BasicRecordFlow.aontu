@@ -1,0 +1,64 @@
+# BasicRecordFlow
+
+main: kit: flow: BasicRecordFlow:
+{
+  entity: "record",
+  kind: "basic",
+  name: "BasicRecordFlow",
+  step: [
+    {
+      input: {
+        ref: "record_ref01"
+      }
+
+      match: {
+        base_id: "base01",
+        table_id: "table01"
+      }
+
+      op: "create"
+    }
+
+    {
+      match: {
+        base_id: "base01",
+        table_id: "table01"
+      }
+
+      op: "list",
+      valid: [
+        {
+          apply: "ItemExists",
+          def: {
+            ref: "record_ref01"
+          }
+        }
+      ]
+    }
+
+    {
+      input: {
+        ref: "record_ref01",
+        srcdatavar: "record_ref01_data",
+        suffix: "_dt0"
+      }
+
+      match: {
+        base_id: "base01",
+        id: "record01",
+        table_id: "table01"
+      }
+
+      op: "load",
+      valid: [
+        {
+          apply: "TextFieldMark",
+          def: {
+            mark: "Mark01-record_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicRecordFlow"
+}

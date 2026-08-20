@@ -1,0 +1,27 @@
+# API Information
+
+
+main: {
+  kit: {
+    info: {
+      description: "Hand-authored minimal spec covering base, table, and record metadata/records endpoints. Airtable publishes no official OpenAPI spec; this mirrors the documented REST shape at airtable.com/developers/web/api."
+      security: {
+        in: "header"
+        name: "Authorization"
+        prefix: "Bearer"
+        scheme: "BearerAuth"
+        type: "http"
+      }
+      servers: [
+        {
+          url: "https://api.airtable.com/v0"
+        }
+      ]
+      summary: "Hand-authored minimal spec covering base, table, and record metadata/records endpoints."
+      title: "Airtable Web API"
+      version: "1.0.0"
+      website: "https://airtable.com"
+    }
+  }
+}
+

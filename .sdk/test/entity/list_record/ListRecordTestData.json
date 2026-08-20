@@ -1,0 +1,35 @@
+{
+  "existing": {
+    "list_record": {
+      "LIST_RECORD00": {
+        "createdTime": "s1e",
+        "fields": {},
+        "id": "LIST_RECORD00",
+        "base_id": "BASE01",
+        "table_id": "TABLE01"
+      },
+      "LIST_RECORD01": {
+        "createdTime": "s3c",
+        "fields": {},
+        "id": "LIST_RECORD01",
+        "base_id": "BASE01",
+        "table_id": "TABLE01"
+      },
+      "LIST_RECORD02": {
+        "createdTime": "s5a",
+        "fields": {},
+        "id": "LIST_RECORD02",
+        "base_id": "BASE01",
+        "table_id": "TABLE01"
+      }
+    }
+  },
+  "new": {
+    "list_record": {
+      "list_record_ref01": {
+        "createdTime": "s78",
+        "fields": {}
+      }
+    }
+  }
+}

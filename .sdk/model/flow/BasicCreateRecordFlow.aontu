@@ -1,0 +1,23 @@
+# BasicCreateRecordFlow
+
+main: kit: flow: BasicCreateRecordFlow:
+{
+  entity: "create_record",
+  kind: "basic",
+  name: "BasicCreateRecordFlow",
+  step: [
+    {
+      input: {
+        ref: "create_record_ref01"
+      }
+
+      match: {
+        base_id: "base01",
+        table_id: "table01"
+      }
+
+      op: "create"
+    }
+  ],
+  "key$": "BasicCreateRecordFlow"
+}

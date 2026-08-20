@@ -1,0 +1,29 @@
+{
+  "existing": {
+    "base": {
+      "BASE00": {
+        "id": "BASE00",
+        "name": "s1f",
+        "permissionLevel": "s20"
+      },
+      "BASE01": {
+        "id": "BASE01",
+        "name": "s3d",
+        "permissionLevel": "s3e"
+      },
+      "BASE02": {
+        "id": "BASE02",
+        "name": "s5b",
+        "permissionLevel": "s5c"
+      }
+    }
+  },
+  "new": {
+    "base": {
+      "base_ref01": {
+        "name": "s79",
+        "permissionLevel": "s7a"
+      }
+    }
+  }
+}

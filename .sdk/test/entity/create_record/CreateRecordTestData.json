@@ -1,0 +1,31 @@
+{
+  "existing": {
+    "create_record": {
+      "CREATE_RECORD00": {
+        "records": [],
+        "base_id": "BASE01",
+        "table_id": "TABLE01",
+        "id": "CREATE_RECORD00"
+      },
+      "CREATE_RECORD01": {
+        "records": [],
+        "base_id": "BASE01",
+        "table_id": "TABLE01",
+        "id": "CREATE_RECORD01"
+      },
+      "CREATE_RECORD02": {
+        "records": [],
+        "base_id": "BASE01",
+        "table_id": "TABLE01",
+        "id": "CREATE_RECORD02"
+      }
+    }
+  },
+  "new": {
+    "create_record": {
+      "create_record_ref01": {
+        "records": []
+      }
+    }
+  }
+}

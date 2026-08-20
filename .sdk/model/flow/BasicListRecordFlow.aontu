@@ -1,0 +1,27 @@
+# BasicListRecordFlow
+
+main: kit: flow: BasicListRecordFlow:
+{
+  entity: "list_record",
+  kind: "basic",
+  name: "BasicListRecordFlow",
+  step: [
+    {
+      match: {
+        base_id: "base01",
+        table_id: "table01"
+      }
+
+      op: "list",
+      valid: [
+        {
+          apply: "ItemExists",
+          def: {
+            ref: "list_record_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicListRecordFlow"
+}

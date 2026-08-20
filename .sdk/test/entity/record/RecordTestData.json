@@ -1,0 +1,42 @@
+{
+  "existing": {
+    "record": {
+      "RECORD00": {
+        "createdTime": "s28",
+        "fields": {},
+        "id": "RECORD00",
+        "records": [],
+        "base_id": "BASE01",
+        "table_id": "TABLE01",
+        "record_id": "RECORD01"
+      },
+      "RECORD01": {
+        "createdTime": "s50",
+        "fields": {},
+        "id": "RECORD01",
+        "records": [],
+        "base_id": "BASE01",
+        "table_id": "TABLE01",
+        "record_id": "RECORD01"
+      },
+      "RECORD02": {
+        "createdTime": "s78",
+        "fields": {},
+        "id": "RECORD02",
+        "records": [],
+        "base_id": "BASE01",
+        "table_id": "TABLE01",
+        "record_id": "RECORD01"
+      }
+    }
+  },
+  "new": {
+    "record": {
+      "record_ref01": {
+        "createdTime": "sa0",
+        "fields": {},
+        "records": []
+      }
+    }
+  }
+}
