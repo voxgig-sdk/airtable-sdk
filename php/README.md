@@ -1,0 +1,550 @@
+# Airtable PHP SDK
+
+
+
+The PHP SDK for the Airtable API — an entity-oriented client using PHP conventions.
+
+The SDK exposes the API as capitalised, semantic **Entities** — for example `$client->Base()` — with named operations (`list`/`load`/`create`) instead of raw URL paths and query strings. Working with resources and verbs keeps call sites self-describing and reduces cognitive load.
+
+> Other languages, the CLI, and MCP server live alongside this one — see
+> the [top-level README](../README.md).
+
+
+## Install
+This package is not yet published to Packagist. Install it from the
+GitHub release tag (`php/vX.Y.Z`):
+
+- Releases: [https://github.com/voxgig-sdk/airtable-sdk/releases](https://github.com/voxgig-sdk/airtable-sdk/releases)
+
+
+## Tutorial: your first API call
+
+This tutorial walks through creating a client, listing entities, and
+loading a specific record.
+
+### 1. Create a client
+
+```php
+<?php
+require_once 'airtable_sdk.php';
+
+$client = new AirtableSDK([
+    "apikey" => getenv("AIRTABLE_APIKEY"),
+]);
+```
+
+### 2. List base records
+
+```php
+try {
+    // list() returns an array of Base records — iterate directly.
+    $bases = $client->Base()->list();
+    foreach ($bases as $item) {
+        echo $item["id"] . " " . $item["name"] . "\n";
+    }
+} catch (\Throwable $err) {
+    echo "Error: " . $err->getMessage();
+}
+```
+
+
+## Error handling
+
+Entity operations throw a `\Throwable` on failure, so wrap them in
+`try` / `catch`:
+
+```php
+try {
+    $bases = $client->Base()->list();
+} catch (\Throwable $err) {
+    echo "Error: " . $err->getMessage();
+}
+```
+
+`direct()` does **not** throw — it returns the result array. Branch on
+`ok`; on failure `status` holds the HTTP status (for error responses) and
+`err` holds a transport error, so read both defensively:
+
+```php
+$result = $client->direct([
+    "path" => "/api/resource/{id}",
+    "method" => "GET",
+    "params" => ["id" => "example_id"],
+]);
+
+if (! $result["ok"]) {
+    $err = $result["err"] ?? null;
+    echo "request failed: " . ($err ? $err->getMessage() : "HTTP " . $result["status"]);
+}
+```
+
+
+## How-to guides
+
+### Make a direct HTTP request
+
+For endpoints not covered by entity methods:
+
+```php
+// direct() is the raw-HTTP escape hatch: it returns a result array
+// (it does not throw). Branch on $result["ok"].
+$result = $client->direct([
+    "path" => "/api/resource/{id}",
+    "method" => "GET",
+    "params" => ["id" => "example"],
+]);
+
+if ($result["ok"]) {
+    echo $result["status"];  // 200
+    print_r($result["data"]);  // response body
+} else {
+    // On an HTTP error status there is no err (only a transport failure sets
+    // it), so fall back to the status code.
+    $err = $result["err"] ?? null;
+    echo "Error: " . ($err ? $err->getMessage() : "HTTP " . $result["status"]);
+}
+```
+
+### Prepare a request without sending it
+
+```php
+// prepare() throws on error and returns the fetch definition.
+$fetchdef = $client->prepare([
+    "path" => "/api/resource/{id}",
+    "method" => "DELETE",
+    "params" => ["id" => "example"],
+]);
+
+echo $fetchdef["url"];
+echo $fetchdef["method"];
+print_r($fetchdef["headers"]);
+```
+
+### Use test mode
+
+Create a mock client for unit testing — no server required:
+
+```php
+$client = AirtableSDK::test();
+
+// Entity ops return the ENTITY (throws on error);
+// call data_get() for the mock record.
+$base = $client->Base()->list();
+print_r($base);
+```
+
+### Use a custom fetch function
+
+Replace the HTTP transport with your own function:
+
+```php
+$mock_fetch = function ($url, $init) {
+    return [
+        [
+            "status" => 200,
+            "statusText" => "OK",
+            "headers" => [],
+            "json" => function () { return ["id" => "mock01"]; },
+        ],
+        null,
+    ];
+};
+
+$client = new AirtableSDK([
+    "base" => "http://localhost:8080",
+    "system" => [
+        "fetch" => $mock_fetch,
+    ],
+]);
+```
+
+### Run live tests
+
+Create a `.env.local` file at the project root:
+
+```
+AIRTABLE_TEST_LIVE=TRUE
+AIRTABLE_APIKEY=<your-key>
+```
+
+Then run:
+
+```bash
+cd php && ./vendor/bin/phpunit test/
+```
+
+
+## Reference
+
+### AirtableSDK
+
+```php
+require_once 'airtable_sdk.php';
+$client = new AirtableSDK($options);
+```
+
+Creates a new SDK client.
+
+| Option | Type | Description |
+| --- | --- | --- |
+| `apikey` | `string` | API key for authentication. |
+| `base` | `string` | Base URL of the API server. |
+| `prefix` | `string` | URL path prefix prepended to all requests. |
+| `suffix` | `string` | URL path suffix appended to all requests. |
+| `feature` | `array` | Feature activation flags. |
+| `extend` | `array` | Additional Feature instances to load. |
+| `system` | `array` | System overrides (e.g. custom `fetch` callable). |
+
+### test
+
+```php
+$client = AirtableSDK::test($testopts, $sdkopts);
+```
+
+Creates a test-mode client with mock transport. Both arguments may be `null`.
+
+### AirtableSDK methods
+
+| Method | Signature | Description |
+| --- | --- | --- |
+| `options_map` | `(): array` | Deep copy of current SDK options. |
+| `get_utility` | `(): Utility` | Copy of the SDK utility object. |
+| `prepare` | `(array $fetchargs): array` | Build an HTTP request definition without sending. |
+| `direct` | `(array $fetchargs): array` | Build and send an HTTP request. |
+| `Base` | `($data): BaseEntity` | Create a Base entity instance. |
+| `CreateRecord` | `($data): CreateRecordEntity` | Create a CreateRecord entity instance. |
+| `GetRecord` | `($data): GetRecordEntity` | Create a GetRecord entity instance. |
+| `ListRecord` | `($data): ListRecordEntity` | Create a ListRecord entity instance. |
+| `Table` | `($data): TableEntity` | Create a Table entity instance. |
+
+### Entity interface
+
+All entities share the same interface.
+
+| Method | Signature | Description |
+| --- | --- | --- |
+| `load` | `($reqmatch, $ctrl): array` | Load a single entity by match criteria. |
+| `list` | `(?array $reqmatch = null, $ctrl): array` | List entities matching the criteria (call with no argument to list all). |
+| `create` | `($reqdata, $ctrl): array` | Create a new entity. |
+| `data_get` | `(): array` | Get entity data. |
+| `data_set` | `($data): void` | Set entity data. |
+| `match_get` | `(): array` | Get entity match criteria. |
+| `match_set` | `($match): void` | Set entity match criteria. |
+| `make` | `(): Entity` | Create a new instance with the same options. |
+| `get_name` | `(): string` | Return the entity name. |
+
+### Result shape
+
+Entity operations return the ENTITY (call data_get() for the record) (an `array` for single-entity
+ops, a `list` for `list`) and throw on error. Wrap calls in
+`try`/`catch` to handle failures.
+
+The `direct()` escape hatch never throws — it returns a result `array`
+you branch on via `$result["ok"]`:
+
+| Key | Type | Description |
+| --- | --- | --- |
+| `ok` | `bool` | `true` if the HTTP status is 2xx. |
+| `status` | `int` | HTTP status code. |
+| `headers` | `array` | Response headers. |
+| `data` | `mixed` | Parsed JSON response body. |
+
+On error, `ok` is `false` and `$err` contains the error value.
+
+### Entities
+
+#### Base
+
+| Field | Description |
+| --- | --- |
+| `id` |  |
+| `name` |  |
+| `permissionLevel` |  |
+
+Operations: List.
+
+API path: `/meta/bases`
+
+#### CreateRecord
+
+| Field | Description |
+| --- | --- |
+| `records` |  |
+
+Operations: Create.
+
+API path: `/{baseId}/{tableId}`
+
+#### GetRecord
+
+| Field | Description |
+| --- | --- |
+
+Operations: Load.
+
+API path: `/{baseId}/{tableId}/{recordId}`
+
+#### ListRecord
+
+| Field | Description |
+| --- | --- |
+| `createdTime` |  |
+| `fields` |  |
+| `id` |  |
+
+Operations: List.
+
+API path: `/{baseId}/{tableId}`
+
+#### Table
+
+| Field | Description |
+| --- | --- |
+| `description` |  |
+| `id` |  |
+| `name` |  |
+| `primaryFieldId` |  |
+
+Operations: Create, List.
+
+API path: `/meta/bases/{baseId}/tables`
+
+
+
+## Entities
+
+
+### Base
+
+Create an instance: `$base = $client->Base();`
+
+#### Operations
+
+| Method | Description |
+| --- | --- |
+| `list(match)` | List entities matching the criteria. |
+
+#### Fields
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `id` | `string` |  |
+| `name` | `string` |  |
+| `permissionLevel` | `string` |  |
+
+#### Example: List
+
+```php
+// list() returns an array of Base records (throws on error).
+$bases = $client->Base()->list();
+```
+
+
+### CreateRecord
+
+Create an instance: `$create_record = $client->CreateRecord();`
+
+#### Operations
+
+| Method | Description |
+| --- | --- |
+| `create(data)` | Create a new entity with the given data. |
+
+#### Fields
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `records` | `array` |  |
+
+#### Example: Create
+
+```php
+$create_record = $client->CreateRecord()->create([
+    "base_id" => null, // string
+    "table_id" => null, // string
+]);
+```
+
+
+### GetRecord
+
+Create an instance: `$get_record = $client->GetRecord();`
+
+#### Operations
+
+| Method | Description |
+| --- | --- |
+| `load(match)` | Load a single entity by match criteria. |
+
+#### Example: Load
+
+```php
+// load() returns the ENTITY — call data_get() for the GetRecord record (throws on error).
+$get_record = $client->GetRecord()->load(["base_id" => "base_id", "record_id" => "record_id", "table_id" => "table_id"]);
+```
+
+
+### ListRecord
+
+Create an instance: `$list_record = $client->ListRecord();`
+
+#### Operations
+
+| Method | Description |
+| --- | --- |
+| `list(match)` | List entities matching the criteria. |
+
+#### Fields
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `createdTime` | `string` |  |
+| `fields` | `array` |  |
+| `id` | `string` |  |
+
+#### Example: List
+
+```php
+// list() returns an array of ListRecord records (throws on error).
+$list_records = $client->ListRecord()->list();
+```
+
+
+### Table
+
+Create an instance: `$table = $client->Table();`
+
+#### Operations
+
+| Method | Description |
+| --- | --- |
+| `create(data)` | Create a new entity with the given data. |
+| `list(match)` | List entities matching the criteria. |
+
+#### Fields
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `description` | `string` |  |
+| `id` | `string` |  |
+| `name` | `string` |  |
+| `primaryFieldId` | `string` |  |
+
+#### Example: List
+
+```php
+// list() returns an array of Table records (throws on error).
+$tables = $client->Table()->list();
+```
+
+#### Example: Create
+
+```php
+$table = $client->Table()->create([
+    "base_id" => null, // string
+]);
+```
+
+
+## Advanced
+
+> The sections above cover everyday use. The material below explains the
+> SDK's internals — useful when extending it with custom features, but not
+> needed for normal use.
+
+### The operation pipeline
+
+Every entity operation follows a six-stage pipeline. Each stage fires a
+feature hook before executing:
+
+```
+PrePoint → PreSpec → PreRequest → PreResponse → PreResult → PreDone
+```
+
+- **PrePoint**: Resolves which API endpoint to call based on the
+  operation name and entity configuration.
+- **PreSpec**: Builds the HTTP spec — URL, method, headers, body —
+  from the resolved point and the caller's parameters.
+- **PreRequest**: Sends the HTTP request. Features can intercept here
+  to replace the transport (as TestFeature does with mocks).
+- **PreResponse**: Parses the raw HTTP response.
+- **PreResult**: Extracts the business data from the parsed response.
+- **PreDone**: Final stage before returning to the caller. Entity
+  state (match, data) is updated here.
+
+If any stage errors, the pipeline short-circuits and the error surfaces
+to the caller — see [Error handling](#error-handling) for how that looks
+in this language.
+
+### Features and hooks
+
+Features are the extension mechanism. A feature is a PHP class
+with hook methods named after pipeline stages (e.g. `PrePoint`,
+`PreSpec`). Each method receives the context.
+
+The SDK ships with built-in features:
+
+- **TestFeature**: In-memory mock transport for testing without a live server
+
+Features are initialized in order. Hooks fire in the order features
+were added, so later features can override earlier ones.
+
+### Data as arrays
+
+The PHP SDK uses plain PHP associative arrays throughout rather than typed
+objects. This mirrors the dynamic nature of the API and keeps the
+SDK flexible — no code generation is needed when the API schema
+changes.
+
+Use `Helpers::to_map()` to safely validate that a value is an array.
+
+### Directory structure
+
+```
+php/
+├── airtable_sdk.php          -- Main SDK class
+├── config.php                     -- Configuration
+├── features.php                   -- Feature factory
+├── core/                          -- Core types and context
+├── entity/                        -- Entity implementations
+├── feature/                       -- Built-in features (Base, Test, Log)
+├── utility/                       -- Utility functions and struct library
+└── test/                          -- Test suites
+```
+
+The main class (`airtable_sdk.php`) exports the SDK class
+and test helper. Import entity or utility modules directly only
+when needed.
+
+### Entity state
+
+Entity instances are stateful. After a successful `list`, the entity
+stores the returned data and match criteria internally.
+
+```php
+$base = $client->Base();
+$base->list();
+
+// $base->data_get() now returns the base data from the last list
+// $base->match_get() returns the last match criteria
+```
+
+Call `make()` to create a fresh instance with the same configuration
+but no stored state.
+
+### Direct vs entity access
+
+The entity interface handles URL construction, parameter placement,
+and response parsing automatically. Use it for standard CRUD operations.
+
+`direct()` gives full control over the HTTP request. Use it for
+non-standard endpoints, bulk operations, or any path not modelled as
+an entity. `prepare()` builds the request without sending it — useful
+for debugging or custom transport.
+
+
+## Full Reference
+
+See [REFERENCE.md](REFERENCE.md) for complete API reference
+documentation including all method signatures, entity field schemas,
+and detailed usage examples.

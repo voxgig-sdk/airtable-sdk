@@ -56,8 +56,8 @@ Entity operations reject on failure, so wrap them in `try` / `catch`:
 
 ```ts
 try {
-  const tables = await client.Table().list()
-  console.log(tables)
+  const bases = await client.Base().list()
+  console.log(bases)
 } catch (err) {
   console.error('list failed:', err)
 }
@@ -123,10 +123,10 @@ Create a mock client for unit testing — no server required:
 ```ts
 const client = AirtableSDK.test()
 
-const table = await client.Table().list()
-// table is the entity, populated with mock response data
-// — call table.data() for the record itself
-console.log(table)
+const base = await client.Base().list()
+// base is the entity, populated with mock response data
+// — call base.data() for the record itself
+console.log(base)
 ```
 
 You can also use the instance method:
@@ -141,7 +141,7 @@ const testClient = client.tester()
 Entity instances remember their last match and data:
 
 ```ts
-const entity = client.Table()
+const entity = client.Base()
 
 // First call runs the operation and stores its result
 await entity.list()
@@ -224,7 +224,9 @@ new AirtableSDK(options?: {
 | `prepare(fetchargs?)` | `Promise<FetchDef>` | Build an HTTP request definition without sending it. |
 | `direct(fetchargs?)` | `Promise<DirectResult>` | Build and send an HTTP request. |
 | `Base(data?)` | `BaseEntity` | Create a Base entity instance. |
-| `Record(data?)` | `RecordEntity` | Create a Record entity instance. |
+| `CreateRecord(data?)` | `CreateRecordEntity` | Create a CreateRecord entity instance. |
+| `GetRecord(data?)` | `GetRecordEntity` | Create a GetRecord entity instance. |
+| `ListRecord(data?)` | `ListRecordEntity` | Create a ListRecord entity instance. |
 | `Table(data?)` | `TableEntity` | Create a Table entity instance. |
 | `tester(testopts?, sdkopts?)` | `AirtableSDK` | Create a test-mode client instance. |
 
@@ -306,16 +308,34 @@ Operations: list.
 
 API path: `/meta/bases`
 
-#### Record
+#### CreateRecord
+
+| Field | Description |
+| --- | --- |
+| `records` |  |
+
+Operations: create.
+
+API path: `/{baseId}/{tableId}`
+
+#### GetRecord
+
+| Field | Description |
+| --- | --- |
+
+Operations: load.
+
+API path: `/{baseId}/{tableId}/{recordId}`
+
+#### ListRecord
 
 | Field | Description |
 | --- | --- |
 | `createdTime` |  |
 | `fields` |  |
 | `id` |  |
-| `records` |  |
 
-Operations: create, list, load.
+Operations: list.
 
 API path: `/{baseId}/{tableId}`
 
@@ -362,17 +382,58 @@ const bases = await client.Base().list()
 ```
 
 
-### Record
+### CreateRecord
 
-Create an instance: `const record = client.Record()`
+Create an instance: `const create_record = client.CreateRecord()`
 
 #### Operations
 
 | Method | Description |
 | --- | --- |
 | `create(data)` | Create a new entity with the given data. |
-| `list(match)` | List entities matching the criteria. |
+
+#### Fields
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `records` | `any[]` |  |
+
+#### Example: Create
+
+```ts
+const create_record = await client.CreateRecord().create({
+  base_id: 'example_base_id',
+  table_id: 'example_table_id',
+})
+```
+
+
+### GetRecord
+
+Create an instance: `const get_record = client.GetRecord()`
+
+#### Operations
+
+| Method | Description |
+| --- | --- |
 | `load(match)` | Load a single entity by match criteria. |
+
+#### Example: Load
+
+```ts
+const get_record = await client.GetRecord().load({ base_id: 'base_id', record_id: 'record_id', table_id: 'table_id' })
+```
+
+
+### ListRecord
+
+Create an instance: `const list_record = client.ListRecord()`
+
+#### Operations
+
+| Method | Description |
+| --- | --- |
+| `list(match)` | List entities matching the criteria. |
 
 #### Fields
 
@@ -381,27 +442,11 @@ Create an instance: `const record = client.Record()`
 | `createdTime` | `string` |  |
 | `fields` | `Record<string, any>` |  |
 | `id` | `string` |  |
-| `records` | `any[]` |  |
-
-#### Example: Load
-
-```ts
-const record = await client.Record().load({ base_id: 'base_id', record_id: 'record_id', table_id: 'table_id' })
-```
 
 #### Example: List
 
 ```ts
-const records = await client.Record().list({ base_id: "example", table_id: "example" })
-```
-
-#### Example: Create
-
-```ts
-const record = await client.Record().create({
-  base_id: 'example_base_id',
-  table_id: 'example_table_id',
-})
+const list_records = await client.ListRecord().list({ base_id: "example", table_id: "example" })
 ```
 
 
@@ -509,11 +554,11 @@ stores the returned data and match criteria internally. Subsequent
 calls on the same instance can rely on this state.
 
 ```ts
-const table = client.Table()
-await table.list()
+const base = client.Base()
+await base.list()
 
-// table.data() now returns the table data from the last `list`
-// table.match() returns the last match criteria
+// base.data() now returns the base data from the last `list`
+// base.match() returns the last match criteria
 ```
 
 Call `make()` to create a fresh instance with the same configuration

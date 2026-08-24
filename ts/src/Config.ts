@@ -51,7 +51,13 @@ class Config {
       base: {
       },
 
-      record: {
+      create_record: {
+      },
+
+      get_record: {
+      },
+
+      list_record: {
       },
 
       table: {
@@ -105,26 +111,14 @@ class Config {
         "ancestors": []
       }
     },
-    "record": {
+    "create_record": {
       "fields": [
-        {
-          "name": "createdTime",
-          "type": "`$STRING`"
-        },
-        {
-          "name": "fields",
-          "type": "`$OBJECT`"
-        },
-        {
-          "name": "id",
-          "type": "`$STRING`"
-        },
         {
           "name": "records",
           "type": "`$ARRAY`"
         }
       ],
-      "name": "record",
+      "name": "create_record",
       "op": {
         "create": {
           "input": "data",
@@ -174,56 +168,16 @@ class Config {
               }
             }
           ]
-        },
-        "list": {
-          "input": "data",
-          "name": "list",
-          "points": [
-            {
-              "args": {
-                "params": [
-                  {
-                    "kind": "param",
-                    "name": "base_id",
-                    "orig": "base_id",
-                    "reqd": true,
-                    "type": "`$STRING`"
-                  },
-                  {
-                    "kind": "param",
-                    "name": "table_id",
-                    "orig": "table_id",
-                    "reqd": true,
-                    "type": "`$STRING`"
-                  }
-                ]
-              },
-              "kind": "http",
-              "method": "GET",
-              "orig": "/{baseId}/{tableId}",
-              "parts": [
-                "{base_id}",
-                "{table_id}"
-              ],
-              "rename": {
-                "param": {
-                  "baseId": "base_id",
-                  "tableId": "table_id"
-                }
-              },
-              "select": {
-                "exist": [
-                  "base_id",
-                  "table_id"
-                ]
-              },
-              "transform": {
-                "req": "`reqdata`",
-                "res": "`body.records`"
-              }
-            }
-          ]
-        },
+        }
+      },
+      "relations": {
+        "ancestors": []
+      }
+    },
+    "get_record": {
+      "fields": [],
+      "name": "get_record",
+      "op": {
         "load": {
           "input": "data",
           "name": "load",
@@ -279,6 +233,77 @@ class Config {
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body.fields`"
+              }
+            }
+          ]
+        }
+      },
+      "relations": {
+        "ancestors": []
+      }
+    },
+    "list_record": {
+      "fields": [
+        {
+          "name": "createdTime",
+          "type": "`$STRING`"
+        },
+        {
+          "name": "fields",
+          "type": "`$OBJECT`"
+        },
+        {
+          "name": "id",
+          "type": "`$STRING`"
+        }
+      ],
+      "name": "list_record",
+      "op": {
+        "list": {
+          "input": "data",
+          "name": "list",
+          "points": [
+            {
+              "args": {
+                "params": [
+                  {
+                    "kind": "param",
+                    "name": "base_id",
+                    "orig": "base_id",
+                    "reqd": true,
+                    "type": "`$STRING`"
+                  },
+                  {
+                    "kind": "param",
+                    "name": "table_id",
+                    "orig": "table_id",
+                    "reqd": true,
+                    "type": "`$STRING`"
+                  }
+                ]
+              },
+              "kind": "http",
+              "method": "GET",
+              "orig": "/{baseId}/{tableId}",
+              "parts": [
+                "{base_id}",
+                "{table_id}"
+              ],
+              "rename": {
+                "param": {
+                  "baseId": "base_id",
+                  "tableId": "table_id"
+                }
+              },
+              "select": {
+                "exist": [
+                  "base_id",
+                  "table_id"
+                ]
+              },
+              "transform": {
+                "req": "`reqdata`",
+                "res": "`body.records`"
               }
             }
           ]

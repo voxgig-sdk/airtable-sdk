@@ -17,31 +17,34 @@ export interface BaseListMatch {
   permissionLevel?: string
 }
 
-export interface RecordType {
-  createdTime?: string
-  fields?: Record<string, any>
-  id?: string
+export interface CreateRecord {
   records?: any[]
 }
 
-export interface RecordLoadMatch {
+export interface CreateRecordCreateData {
+  base_id: string
+  table_id: string
+  records?: any[]
+}
+
+export interface GetRecord {
+}
+
+export interface GetRecordLoadMatch {
   base_id: string
   record_id: string
   table_id: string
 }
 
-export interface RecordListMatch {
-  base_id: string
-  table_id: string
-}
-
-export interface RecordCreateData {
-  base_id: string
-  table_id: string
+export interface ListRecord {
   createdTime?: string
   fields?: Record<string, any>
   id?: string
-  records?: any[]
+}
+
+export interface ListRecordListMatch {
+  base_id: string
+  table_id: string
 }
 
 export interface Table {

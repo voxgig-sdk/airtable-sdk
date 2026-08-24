@@ -1,7 +1,9 @@
 // Airtable Ts SDK
 
 import { BaseEntity } from './entity/BaseEntity'
-import { RecordEntity } from './entity/RecordEntity'
+import { CreateRecordEntity } from './entity/CreateRecordEntity'
+import { GetRecordEntity } from './entity/GetRecordEntity'
+import { ListRecordEntity } from './entity/ListRecordEntity'
 import { TableEntity } from './entity/TableEntity'
 
 export type * from './AirtableTypes'
@@ -294,12 +296,30 @@ class AirtableSDK {
   }
 
 
-  // Entity access: `client.Record().list()` / `client.Record().load({ id })`.
+  // Entity access: `client.CreateRecord().list()` / `client.CreateRecord().load({ id })`.
   // The argument is the entity OPTIONS object (passed to the entity
   // constructor as entopts), not initial entity data.
-  Record(entopts?: Record<string, any>) {
+  CreateRecord(entopts?: Record<string, any>) {
     const self = this
-    return new RecordEntity(self, entopts)
+    return new CreateRecordEntity(self, entopts)
+  }
+
+
+  // Entity access: `client.GetRecord().list()` / `client.GetRecord().load({ id })`.
+  // The argument is the entity OPTIONS object (passed to the entity
+  // constructor as entopts), not initial entity data.
+  GetRecord(entopts?: Record<string, any>) {
+    const self = this
+    return new GetRecordEntity(self, entopts)
+  }
+
+
+  // Entity access: `client.ListRecord().list()` / `client.ListRecord().load({ id })`.
+  // The argument is the entity OPTIONS object (passed to the entity
+  // constructor as entopts), not initial entity data.
+  ListRecord(entopts?: Record<string, any>) {
+    const self = this
+    return new ListRecordEntity(self, entopts)
   }
 
 

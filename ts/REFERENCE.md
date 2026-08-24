@@ -61,9 +61,9 @@ Create a new `Base` entity instance.
 
 **Returns:** `BaseEntity` instance.
 
-#### `Record(data?: object)`
+#### `CreateRecord(data?: object)`
 
-Create a new `Record` entity instance.
+Create a new `CreateRecord` entity instance.
 
 **Parameters:**
 
@@ -71,7 +71,31 @@ Create a new `Record` entity instance.
 | --- | --- | --- |
 | `data` | `object` | Initial entity data. |
 
-**Returns:** `RecordEntity` instance.
+**Returns:** `CreateRecordEntity` instance.
+
+#### `GetRecord(data?: object)`
+
+Create a new `GetRecord` entity instance.
+
+**Parameters:**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `data` | `object` | Initial entity data. |
+
+**Returns:** `GetRecordEntity` instance.
+
+#### `ListRecord(data?: object)`
+
+Create a new `ListRecord` entity instance.
+
+**Parameters:**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `data` | `object` | Initial entity data. |
+
+**Returns:** `ListRecordEntity` instance.
 
 #### `Table(data?: object)`
 
@@ -183,19 +207,16 @@ Return a copy of the entity options.
 
 ---
 
-## RecordEntity
+## CreateRecordEntity
 
 ```ts
-const record = client.Record()
+const create_record = client.CreateRecord()
 ```
 
 ### Fields
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `createdTime` | `string` | No |  |
-| `fields` | `Record<string, any>` | No |  |
-| `id` | `string` | No |  |
 | `records` | `any[]` | No |  |
 
 ### Operations
@@ -205,26 +226,10 @@ const record = client.Record()
 Create a new entity with the given data.
 
 ```ts
-const result = await client.Record().create({
+const result = await client.CreateRecord().create({
   base_id: 'example_base_id',
   table_id: 'example_table_id',
 })
-```
-
-#### `list(match: object, ctrl?: object)`
-
-List entities matching the given criteria. Returns an array.
-
-```ts
-const results = await client.Record().list({ base_id: "example", table_id: "example" })
-```
-
-#### `load(match: object, ctrl?: object)`
-
-Load a single entity matching the given criteria.
-
-```ts
-const result = await client.Record().load({ base_id: 'base_id', record_id: 'record_id', table_id: 'table_id' })
 ```
 
 ### Common Methods
@@ -241,7 +246,103 @@ Get or set the entity match criteria. Works the same as `data()`.
 
 #### `make()`
 
-Create a new `RecordEntity` instance with the same client and
+Create a new `CreateRecordEntity` instance with the same client and
+options.
+
+#### `client()`
+
+Return the parent `AirtableSDK` instance.
+
+#### `entopts()`
+
+Return a copy of the entity options.
+
+
+---
+
+## GetRecordEntity
+
+```ts
+const get_record = client.GetRecord()
+```
+
+### Operations
+
+#### `load(match: object, ctrl?: object)`
+
+Load a single entity matching the given criteria.
+
+```ts
+const result = await client.GetRecord().load({ base_id: 'base_id', record_id: 'record_id', table_id: 'table_id' })
+```
+
+### Common Methods
+
+#### `data(data?: object)`
+
+Get or set the entity data. When called with data, sets the entity's
+internal data and returns the current data. When called without
+arguments, returns a copy of the current data.
+
+#### `match(match?: object)`
+
+Get or set the entity match criteria. Works the same as `data()`.
+
+#### `make()`
+
+Create a new `GetRecordEntity` instance with the same client and
+options.
+
+#### `client()`
+
+Return the parent `AirtableSDK` instance.
+
+#### `entopts()`
+
+Return a copy of the entity options.
+
+
+---
+
+## ListRecordEntity
+
+```ts
+const list_record = client.ListRecord()
+```
+
+### Fields
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `createdTime` | `string` | No |  |
+| `fields` | `Record<string, any>` | No |  |
+| `id` | `string` | No |  |
+
+### Operations
+
+#### `list(match: object, ctrl?: object)`
+
+List entities matching the given criteria. Returns an array.
+
+```ts
+const results = await client.ListRecord().list({ base_id: "example", table_id: "example" })
+```
+
+### Common Methods
+
+#### `data(data?: object)`
+
+Get or set the entity data. When called with data, sets the entity's
+internal data and returns the current data. When called without
+arguments, returns a copy of the current data.
+
+#### `match(match?: object)`
+
+Get or set the entity match criteria. Works the same as `data()`.
+
+#### `make()`
+
+Create a new `ListRecordEntity` instance with the same client and
 options.
 
 #### `client()`
