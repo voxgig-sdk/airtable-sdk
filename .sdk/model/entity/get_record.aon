@@ -1,0 +1,70 @@
+# Entity: get_record
+
+main: kit: entity: get_record: {
+
+  alias: field: {}
+
+  name: "get_record"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "base_id"
+                orig: "base_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "record_id"
+                orig: "record_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "table_id"
+                orig: "table_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/{baseId}/{tableId}/{recordId}"
+          parts: [
+            "{base_id}"
+            "{table_id}"
+            "{record_id}"
+          ]
+          rename: {
+            param: {
+              baseId: "base_id"
+              recordId: "record_id"
+              tableId: "table_id"
+            }
+          }
+          select: {
+            exist: [
+              "base_id"
+              "record_id"
+              "table_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.fields`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

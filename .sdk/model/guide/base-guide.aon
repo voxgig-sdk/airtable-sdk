@@ -1,7 +1,7 @@
 # Guide
 
 guide: {
-  metrics: count: entity: 3
+  metrics: count: entity: 5
   metrics: count: path: 4
   metrics: count: method: 6
 
@@ -12,20 +12,30 @@ guide: {
     }
   }
 
-  entity: record: {
+  entity: create_record: {
     path: "/{baseId}/{tableId}": {
       rename: param: "baseId": *"base_id"
       rename: param: "tableId": *"table_id"
       op: create: method: *POST
-      op: list: method: *GET
-      op: list: transform: res: *("`body.records`")|top
     }
+  }
+
+  entity: get_record: {
     path: "/{baseId}/{tableId}/{recordId}": {
       rename: param: "baseId": *"base_id"
       rename: param: "recordId": *"record_id"
       rename: param: "tableId": *"table_id"
       op: load: method: *GET
       op: load: transform: res: *("`body.fields`")|top
+    }
+  }
+
+  entity: list_record: {
+    path: "/{baseId}/{tableId}": {
+      rename: param: "baseId": *"base_id"
+      rename: param: "tableId": *"table_id"
+      op: list: method: *GET
+      op: list: transform: res: *("`body.records`")|top
     }
   }
 

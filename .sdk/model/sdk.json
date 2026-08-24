@@ -95,7 +95,7 @@
             "ancestors": []
           }
         },
-        "record": {
+        "create_record": {
           "active": true,
           "alias": {
             "field": {}
@@ -103,34 +103,12 @@
           "fields": [
             {
               "active": true,
-              "name": "createdTime",
-              "req": false,
-              "type": "`$STRING`"
-            },
-            {
-              "active": true,
-              "name": "fields",
-              "req": false,
-              "type": "`$OBJECT`"
-            },
-            {
-              "active": true,
-              "name": "id",
-              "req": false,
-              "type": "`$STRING`"
-            },
-            {
-              "active": true,
               "name": "records",
               "req": false,
               "type": "`$ARRAY`"
             }
           ],
-          "id": {
-            "field": "id",
-            "name": "id"
-          },
-          "name": "record",
+          "name": "create_record",
           "op": {
             "create": {
               "input": "data",
@@ -183,59 +161,20 @@
                   }
                 }
               ]
-            },
-            "list": {
-              "input": "data",
-              "name": "list",
-              "points": [
-                {
-                  "active": true,
-                  "args": {
-                    "params": [
-                      {
-                        "active": true,
-                        "kind": "param",
-                        "name": "base_id",
-                        "orig": "base_id",
-                        "reqd": true,
-                        "type": "`$STRING`"
-                      },
-                      {
-                        "active": true,
-                        "kind": "param",
-                        "name": "table_id",
-                        "orig": "table_id",
-                        "reqd": true,
-                        "type": "`$STRING`"
-                      }
-                    ]
-                  },
-                  "kind": "http",
-                  "method": "GET",
-                  "orig": "/{baseId}/{tableId}",
-                  "parts": [
-                    "{base_id}",
-                    "{table_id}"
-                  ],
-                  "rename": {
-                    "param": {
-                      "baseId": "base_id",
-                      "tableId": "table_id"
-                    }
-                  },
-                  "select": {
-                    "exist": [
-                      "base_id",
-                      "table_id"
-                    ]
-                  },
-                  "transform": {
-                    "req": "`reqdata`",
-                    "res": "`body.records`"
-                  }
-                }
-              ]
-            },
+            }
+          },
+          "relations": {
+            "ancestors": []
+          }
+        },
+        "get_record": {
+          "active": true,
+          "alias": {
+            "field": {}
+          },
+          "fields": [],
+          "name": "get_record",
+          "op": {
             "load": {
               "input": "data",
               "name": "load",
@@ -295,6 +234,94 @@
                   "transform": {
                     "req": "`reqdata`",
                     "res": "`body.fields`"
+                  }
+                }
+              ]
+            }
+          },
+          "relations": {
+            "ancestors": []
+          }
+        },
+        "list_record": {
+          "active": true,
+          "alias": {
+            "field": {}
+          },
+          "fields": [
+            {
+              "active": true,
+              "name": "createdTime",
+              "req": false,
+              "type": "`$STRING`"
+            },
+            {
+              "active": true,
+              "name": "fields",
+              "req": false,
+              "type": "`$OBJECT`"
+            },
+            {
+              "active": true,
+              "name": "id",
+              "req": false,
+              "type": "`$STRING`"
+            }
+          ],
+          "id": {
+            "field": "id",
+            "name": "id"
+          },
+          "name": "list_record",
+          "op": {
+            "list": {
+              "input": "data",
+              "name": "list",
+              "points": [
+                {
+                  "active": true,
+                  "args": {
+                    "params": [
+                      {
+                        "active": true,
+                        "kind": "param",
+                        "name": "base_id",
+                        "orig": "base_id",
+                        "reqd": true,
+                        "type": "`$STRING`"
+                      },
+                      {
+                        "active": true,
+                        "kind": "param",
+                        "name": "table_id",
+                        "orig": "table_id",
+                        "reqd": true,
+                        "type": "`$STRING`"
+                      }
+                    ]
+                  },
+                  "kind": "http",
+                  "method": "GET",
+                  "orig": "/{baseId}/{tableId}",
+                  "parts": [
+                    "{base_id}",
+                    "{table_id}"
+                  ],
+                  "rename": {
+                    "param": {
+                      "baseId": "base_id",
+                      "tableId": "table_id"
+                    }
+                  },
+                  "select": {
+                    "exist": [
+                      "base_id",
+                      "table_id"
+                    ]
+                  },
+                  "transform": {
+                    "req": "`reqdata`",
+                    "res": "`body.records`"
                   }
                 }
               ]
@@ -544,19 +571,19 @@
             }
           ]
         },
-        "BasicRecordFlow": {
+        "BasicCreateRecordFlow": {
           "active": true,
-          "entity": "record",
-          "key$": "BasicRecordFlow",
+          "entity": "create_record",
+          "key$": "BasicCreateRecordFlow",
           "kind": "basic",
-          "name": "BasicRecordFlow",
+          "name": "BasicCreateRecordFlow",
           "param": {},
           "step": [
             {
               "active": true,
               "data": {},
               "input": {
-                "ref": "record_ref01"
+                "ref": "create_record_ref01"
               },
               "match": {
                 "base_id": "base01",
@@ -565,7 +592,51 @@
               "op": "create",
               "spec": [],
               "valid": []
-            },
+            }
+          ]
+        },
+        "BasicGetRecordFlow": {
+          "active": true,
+          "entity": "get_record",
+          "key$": "BasicGetRecordFlow",
+          "kind": "basic",
+          "name": "BasicGetRecordFlow",
+          "param": {},
+          "step": [
+            {
+              "active": true,
+              "data": {},
+              "input": {
+                "ref": "get_record_ref01",
+                "srcdatavar": "get_record_ref01_data",
+                "suffix": "_dt0"
+              },
+              "match": {
+                "base_id": "base01",
+                "id": "get_record01",
+                "table_id": "table01"
+              },
+              "op": "load",
+              "spec": [],
+              "valid": [
+                {
+                  "apply": "TextFieldMark",
+                  "def": {
+                    "mark": "Mark01-get_record_ref01"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "BasicListRecordFlow": {
+          "active": true,
+          "entity": "list_record",
+          "key$": "BasicListRecordFlow",
+          "kind": "basic",
+          "name": "BasicListRecordFlow",
+          "param": {},
+          "step": [
             {
               "active": true,
               "data": {},
@@ -580,31 +651,7 @@
                 {
                   "apply": "ItemExists",
                   "def": {
-                    "ref": "record_ref01"
-                  }
-                }
-              ]
-            },
-            {
-              "active": true,
-              "data": {},
-              "input": {
-                "ref": "record_ref01",
-                "srcdatavar": "record_ref01_data",
-                "suffix": "_dt0"
-              },
-              "match": {
-                "base_id": "base01",
-                "id": "record01",
-                "table_id": "table01"
-              },
-              "op": "load",
-              "spec": [],
-              "valid": [
-                {
-                  "apply": "TextFieldMark",
-                  "def": {
-                    "mark": "Mark01-record_ref01"
+                    "ref": "list_record_ref01"
                   }
                 }
               ]

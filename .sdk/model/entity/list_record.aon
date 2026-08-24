@@ -1,0 +1,83 @@
+# Entity: list_record
+
+main: kit: entity: list_record: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "createdTime"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "fields"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "list_record"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "base_id"
+                orig: "base_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "param"
+                name: "table_id"
+                orig: "table_id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/{baseId}/{tableId}"
+          parts: [
+            "{base_id}"
+            "{table_id}"
+          ]
+          rename: {
+            param: {
+              baseId: "base_id"
+              tableId: "table_id"
+            }
+          }
+          select: {
+            exist: [
+              "base_id"
+              "table_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.records`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

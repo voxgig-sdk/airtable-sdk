@@ -1,0 +1,7 @@
+# Flows
+
+@"BasicBaseFlow.aon"
+@"BasicCreateRecordFlow.aon"
+@"BasicGetRecordFlow.aon"
+@"BasicListRecordFlow.aon"
+@"BasicTableFlow.aon"
